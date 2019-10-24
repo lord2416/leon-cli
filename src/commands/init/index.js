@@ -1,9 +1,7 @@
-import fs from "fs";
-import ora from "ora";
-import inquirer from "inquirer";
-import symbol from "log-symbols";
-import download from '../../utils/download';
-import { green, red, SETTING } from '../../constants';
+import fs from 'fs';
+import inquirer from 'inquirer';
+import downloadSourceToDirectory from '../../utils/download';
+import { log } from '../../utils/log';
 
 const promptings = [
   {
@@ -15,17 +13,6 @@ const promptings = [
     message: 'Please enter the Author name: ',
   },
 ];
-
-const downloadTemp = async name => {
-  console.log(name);
-  const spinner = ora('template is downloading...').start();
-  try {
-    await download(SETTING.registry, name);
-    spinner.succeed('template download success!');
-  } catch {
-    spinner.fail('template download failed!');
-  }
-};
 
 const fileOperate = ({ name, answer: { author, description } }) => {
   const file = `${name}/package.json`;
@@ -39,39 +26,29 @@ const fileOperate = ({ name, answer: { author, description } }) => {
       description,
     };
 
-    fs.writeFileSync(
-      file,
-      JSON.stringify(setting, null, "\t"),
-      "utf-8"
-    );
+    fs.writeFileSync(file, JSON.stringify(setting, null, '\t'), 'utf-8');
   }
 
-  console.log();
-  console.log(
-    symbol.success,
-    green("Project initialization finished!")
-  );
-}
+  log.symbolSuccess('Project initialization finished!');
+};
 
 const init = async args => {
-  console.log(args);
-  const [ name ] = args;
+  const [directory] = args;
 
-  if (!fs.existsSync(name)) {
+  if (!fs.existsSync(directory)) {
     // 初始化交互
-    inquirer
-      .prompt(promptings)
-      .then(async answer => {
-        console.log(answer);
-        await downloadTemp(name);
+    inquirer.prompt(promptings).then(async answer => {
+      const { success } = await downloadSourceToDirectory(directory);
+      if (success) {
         fileOperate({
-          name,
+          name: directory,
           answer,
         });
-      });
+      }
+    });
   } else {
     // 项目已经存在
-    console.log(symbol.error, red(`The project <${name}> already exists`));
+    log.symbolError(`The project <${name}> already exists`);
   }
 };
 

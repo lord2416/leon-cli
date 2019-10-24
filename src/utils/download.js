@@ -1,17 +1,60 @@
 import downloadGit from 'download-git-repo';
-import { getAll } from './resource';
-import { resolve } from 'dns';
+import ora from 'ora';
+import { readRCFile } from './resource';
+import { log } from './log';
 
-const download = async (url, directoryPath) => {
-  const config = await getAll();
+const downloadFromRepository = async (
+  url,
+  directoryPath,
+  opts = { clone: false }
+) => {
   return new Promise((resolve, reject) => {
-    downloadGit(url, directoryPath, err => {
+    downloadGit(url, directoryPath, opts, err => {
       if (err) {
         reject(err);
       }
       resolve();
-    })
+    });
   });
 };
 
-export default download;
+const downloadSourceToDirectory = async directory => {
+  const { registry, template } = await readRCFile();
+
+  if (!registry) {
+    log.error(
+      `registry not exists, please use "leon use <template-name>" to set registry first!`
+    );
+    return {
+      success: false,
+    };
+  }
+
+  const url = template[registry];
+
+  if (!url) {
+    log.error(`template <${registry}>: "${url}" is not correct!`);
+    return {
+      success: false,
+    };
+  }
+
+  const spinner = ora('Template is downloading...').start();
+  try {
+    await downloadFromRepository(url, directory, {
+      clone: true,
+    });
+    spinner.succeed('Template download success!');
+    return {
+      success: true,
+    };
+  } catch (e) {
+    spinner.fail('Template download failed!');
+    log.symbolError(e);
+    return {
+      success: false,
+    };
+  }
+};
+
+export default downloadSourceToDirectory;

@@ -1,40 +1,33 @@
 import program from 'commander';
 import { execute } from './commands';
-import { actions, green, usages, ACTIONMAP, VERSION } from './constants';
+import { actions, usages, ACTIONMAP, VERSION } from './constants';
+import { log } from './utils/log';
 
 const help = () => {
-  console.log();
-  console.log(green('Usages:'));
+  log.space();
+  log.green('Usages:');
   usages.forEach(usage => {
-    console.log(green(usage));
+    log.green(usage);
   });
-}
+};
 
+log.space();
 actions.forEach(({ name, description, alias }) => {
   program
     .command(name)
     .description(description)
     .alias(alias)
     .action(() => {
-      switch (name) {
-        case ACTIONMAP.CONFIG.NAME:
-          execute(ACTIONMAP.CONFIG.NAME, process.argv.slice(3));
-          break;
-        case ACTIONMAP.INIT.NAME:
-            execute(ACTIONMAP.INIT.NAME, process.argv.slice(3));
-          break;
-        default:
-          break;
-      }
+      execute(name, process.argv.slice(3));
     });
 });
 
-program.name('leon').usage('[options]');
+program.name('leon').usage('cli [options]');
 program.on('-h', help);
 program.on('--help', help);
-program.version(VERSION, "-v --version").parse(process.argv);
+program.version(VERSION, '-v --version').parse(process.argv);
 
 // when leon no params
 if (!process.argv.slice(2).length) {
-  program.outputHelp(t => green(t));
+  program.outputHelp(t => t);
 }

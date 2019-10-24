@@ -7,25 +7,21 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
-var _slicedToArray2 = _interopRequireDefault(require("@babel/runtime/helpers/slicedToArray"));
-
-var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
-
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
+
+var _slicedToArray2 = _interopRequireDefault(require("@babel/runtime/helpers/slicedToArray"));
 
 var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
 
-var _fs = _interopRequireDefault(require("fs"));
+var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
 
-var _ora = _interopRequireDefault(require("ora"));
+var _fs = _interopRequireDefault(require("fs"));
 
 var _inquirer = _interopRequireDefault(require("inquirer"));
 
-var _logSymbols = _interopRequireDefault(require("log-symbols"));
-
 var _download = _interopRequireDefault(require("../../utils/download"));
 
-var _constants = require("../../constants");
+var _log = require("../../utils/log");
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
@@ -39,51 +35,11 @@ var promptings = [{
   message: 'Please enter the Author name: '
 }];
 
-var downloadTemp =
-/*#__PURE__*/
-function () {
-  var _ref = (0, _asyncToGenerator2["default"])(
-  /*#__PURE__*/
-  _regenerator["default"].mark(function _callee(name) {
-    var spinner;
-    return _regenerator["default"].wrap(function _callee$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            console.log(name);
-            spinner = (0, _ora["default"])('template is downloading...').start();
-            _context.prev = 2;
-            _context.next = 5;
-            return (0, _download["default"])(_constants.SETTING.registry, name);
-
-          case 5:
-            spinner.succeed('template download success!');
-            _context.next = 11;
-            break;
-
-          case 8:
-            _context.prev = 8;
-            _context.t0 = _context["catch"](2);
-            spinner.fail('template download failed!');
-
-          case 11:
-          case "end":
-            return _context.stop();
-        }
-      }
-    }, _callee, null, [[2, 8]]);
-  }));
-
-  return function downloadTemp(_x) {
-    return _ref.apply(this, arguments);
-  };
-}();
-
-var fileOperate = function fileOperate(_ref2) {
-  var name = _ref2.name,
-      _ref2$answer = _ref2.answer,
-      author = _ref2$answer.author,
-      description = _ref2$answer.description;
+var fileOperate = function fileOperate(_ref) {
+  var name = _ref.name,
+      _ref$answer = _ref.answer,
+      author = _ref$answer.author,
+      description = _ref$answer.description;
   var file = "".concat(name, "/package.json");
 
   if (_fs["default"].existsSync(file)) {
@@ -95,77 +51,81 @@ var fileOperate = function fileOperate(_ref2) {
       description: description
     });
 
-    _fs["default"].writeFileSync(file, JSON.stringify(setting, null, "\t"), "utf-8");
+    _fs["default"].writeFileSync(file, JSON.stringify(setting, null, '\t'), 'utf-8');
   }
 
-  console.log();
-  console.log(_logSymbols["default"].success, (0, _constants.green)("Project initialization finished!"));
+  _log.log.symbolSuccess('Project initialization finished!');
 };
 
 var init =
 /*#__PURE__*/
 function () {
-  var _ref3 = (0, _asyncToGenerator2["default"])(
+  var _ref2 = (0, _asyncToGenerator2["default"])(
   /*#__PURE__*/
-  _regenerator["default"].mark(function _callee3(args) {
-    var _args2, name;
+  _regenerator["default"].mark(function _callee2(args) {
+    var _args, directory;
 
-    return _regenerator["default"].wrap(function _callee3$(_context3) {
+    return _regenerator["default"].wrap(function _callee2$(_context2) {
       while (1) {
-        switch (_context3.prev = _context3.next) {
+        switch (_context2.prev = _context2.next) {
           case 0:
-            console.log(args);
-            _args2 = (0, _slicedToArray2["default"])(args, 1), name = _args2[0];
+            _args = (0, _slicedToArray2["default"])(args, 1), directory = _args[0];
 
-            if (!_fs["default"].existsSync(name)) {
+            if (!_fs["default"].existsSync(directory)) {
               // 初始化交互
               _inquirer["default"].prompt(promptings).then(
               /*#__PURE__*/
               function () {
-                var _ref4 = (0, _asyncToGenerator2["default"])(
+                var _ref3 = (0, _asyncToGenerator2["default"])(
                 /*#__PURE__*/
-                _regenerator["default"].mark(function _callee2(answer) {
-                  return _regenerator["default"].wrap(function _callee2$(_context2) {
+                _regenerator["default"].mark(function _callee(answer) {
+                  var _ref4, success;
+
+                  return _regenerator["default"].wrap(function _callee$(_context) {
                     while (1) {
-                      switch (_context2.prev = _context2.next) {
+                      switch (_context.prev = _context.next) {
                         case 0:
-                          console.log(answer);
-                          _context2.next = 3;
-                          return downloadTemp(name);
+                          _context.next = 2;
+                          return (0, _download["default"])(directory);
 
-                        case 3:
-                          fileOperate({
-                            name: name,
-                            answer: answer
-                          });
+                        case 2:
+                          _ref4 = _context.sent;
+                          success = _ref4.success;
 
-                        case 4:
+                          if (success) {
+                            fileOperate({
+                              name: directory,
+                              answer: answer
+                            });
+                          }
+
+                        case 5:
                         case "end":
-                          return _context2.stop();
+                          return _context.stop();
                       }
                     }
-                  }, _callee2);
+                  }, _callee);
                 }));
 
-                return function (_x3) {
-                  return _ref4.apply(this, arguments);
+                return function (_x2) {
+                  return _ref3.apply(this, arguments);
                 };
               }());
             } else {
               // 项目已经存在
-              console.log(_logSymbols["default"].error, (0, _constants.red)("The project <".concat(name, "> already exists")));
+              _log.log.symbolError("The project <".concat(name, "> already exists"));
             }
 
-          case 3:
+          case 2:
           case "end":
-            return _context3.stop();
+            return _context2.stop();
         }
       }
-    }, _callee3);
+    }, _callee2);
   }));
 
-  return function init(_x2) {
-    return _ref3.apply(this, arguments);
+  return function init(_x) {
+    return _ref2.apply(this, arguments);
   };
 }();
 
