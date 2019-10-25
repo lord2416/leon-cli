@@ -11,8 +11,8 @@
     "prettier": "prettier --write ./src/**/**/**/*"
   },
   "keywords": [
-    "react",
-    "webpack",
+    "command",
+    "template",
     "cli"
   ],
   "author": "leonliu",
