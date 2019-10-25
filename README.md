@@ -1,12 +1,14 @@
-English | [简体中文](./README_zh-CN.md)
+English | [简体中文](https://github.com/lord2416/leon-cli/blob/dev/README_zh-CN.md)
 
 leon-cli -- Template manager
 ===
 
+[![npm](https://img.shields.io/npm/v/leon-cli)](https://www.npmjs.com/package/leon-cli)
+
 ## Install
 
 ```
-$ npm install -g leon
+$ npm install -g leon-cli
 ```
 
 ## Example

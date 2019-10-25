@@ -1,12 +1,14 @@
-[English](./README.md) | 简体中文
+[English](https://github.com/lord2416/leon-cli/blob/dev/README.md) | 简体中文
 
 leon-cli -- 模板管理工具
 ===
 
+[![npm](https://img.shields.io/npm/v/leon-cli)](https://www.npmjs.com/package/leon-cli)
+
 ## 安装
 
 ```
-$ npm install -g leon
+$ npm install -g leon-cli
 ```
 
 ## 示例

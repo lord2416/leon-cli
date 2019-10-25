@@ -1,6 +1,6 @@
 {
   "name": "leon-cli",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "cli tools",
   "main": "index.js",
   "bin": {
@@ -17,6 +17,7 @@
   ],
   "author": "leonliu",
   "license": "MIT",
+  "repository": "github:lord2416/leon-cli",
   "devDependencies": {
     "@babel/cli": "^7.6.4",
     "@babel/core": "^7.6.4",
