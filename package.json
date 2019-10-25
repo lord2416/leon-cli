@@ -16,7 +16,7 @@
     "cli"
   ],
   "author": "leonliu",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@babel/cli": "^7.6.4",
     "@babel/core": "^7.6.4",

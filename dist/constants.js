@@ -49,11 +49,11 @@ var actions = [{
 }, {
   name: ACTIONMAP.LIST.NAME,
   alias: ACTIONMAP.LIST.ALIAS,
-  description: 'Show template lists.'
+  description: 'Show template lists'
 }, {
   name: ACTIONMAP.USE.NAME,
   alias: ACTIONMAP.USE.ALIAS,
-  description: 'Change registry by a template'
+  description: 'Switch template to use'
 }, {
   name: ACTIONMAP.GET.NAME,
   alias: ACTIONMAP.GET.ALIAS,
@@ -68,7 +68,7 @@ var actions = [{
   description: 'Delete one custom template'
 }];
 exports.actions = actions;
-var usages = ['  leon init <project-name>                   : Init a project by template', '  leon list                                  : List all the templates', '  leon get <key>?                            : Get one custom template', '  leon set <key> <value>                     : Add or modify one custom template', '  leon remove <key>                          : Delete one custom template', '  leon use <template-name>                   : Change registry by template'];
+var usages = ['  leon init <project-name>                   : Init a project by template', '  leon list                                  : List all the templates', '  leon get <key>?                            : Get one custom template', '  leon set <key> <value>                     : Add or modify one custom template', '  leon remove <key>                          : Delete one custom template', '  leon use <template-name>                   : Switch template to use'];
 exports.usages = usages;
 var VERSION = _package.version;
 exports.VERSION = VERSION;

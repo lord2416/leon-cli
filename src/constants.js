@@ -44,17 +44,18 @@ export const actions = [
   {
     name: ACTIONMAP.LIST.NAME,
     alias: ACTIONMAP.LIST.ALIAS,
-    description: 'Show template lists.',
+    description: 'Show template lists',
   },
   {
     name: ACTIONMAP.USE.NAME,
     alias: ACTIONMAP.USE.ALIAS,
-    description: 'Change registry by a template',
+    description: 'Switch template to use',
   },
   {
     name: ACTIONMAP.GET.NAME,
     alias: ACTIONMAP.GET.ALIAS,
-    description: 'Get one custom template, if only use "leon get" show all templates',
+    description:
+      'Get one custom template, if only use "leon get" show all templates',
   },
   {
     name: ACTIONMAP.SET.NAME,
@@ -74,7 +75,7 @@ export const usages = [
   '  leon get <key>?                            : Get one custom template',
   '  leon set <key> <value>                     : Add or modify one custom template',
   '  leon remove <key>                          : Delete one custom template',
-  '  leon use <template-name>                   : Change registry by template',
+  '  leon use <template-name>                   : Switch template to use',
 ];
 
 export const VERSION = version;

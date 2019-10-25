@@ -1,38 +1,38 @@
-English | [简体中文](./README_zh-CN.md)
+[English](./README.md) | 简体中文
 
-leon-cli -- Template manager
+leon-cli -- 模板管理工具
 ===
 
-## Install
+## 安装
 
 ```
 $ npm install -g leon
 ```
 
-## Example
+## 示例
 ```
-## Show template lists
+## 查看模板列表
 $ leon ls
 ```
 
 ```
-## Switch template to use
+## 使用模板
 $ leon use leonCli  //switch template
 ```
 
 ```
-## Operate templates
+## 模板管理操作
 $ leon get leonCli
 $ leon set leonCli "direct:https://github.com/lord2416/leon-cli.git"
 $ leon remove leonCli
 ```
 
 ```
-## Init project
+## 初始化项目
 $ leon init <your-project-name>
 ```
 
-## Usage
+## 使用
 
 ```
 Usage: leon cli [options]
