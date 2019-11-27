@@ -1,0 +1,6 @@
+{
+	"registry": "leonCli",
+	"template": {
+		"leonCli": "direct:https://github.com/lord2416/leon-cli.git"
+	}
+}

@@ -1,73 +1,70 @@
 import fs from 'fs';
 import { promisify } from 'util';
-import { decode, encode } from 'ini';
-import { BASE, SETTING, bold, red } from '../constants';
+import { SETTING } from '../constants';
+import { leonrc } from './path';
+import { log } from './log';
 
-const exits = promisify(fs.exists);
+const exists = promisify(fs.exists);
 const readFile = promisify(fs.readFile);
 const writeFile = promisify(fs.writeFile);
 
-const leonrc = `${BASE}/.leonrc`;
+export const encode = (opt = {}) => JSON.stringify(opt, null, '\t');
+export const decode = str => JSON.parse(str);
 
-export const get = async key => {
-  const exit = await exits(leonrc);
+export const readRCFile = async key => {
+  const flag = await exists(leonrc);
 
-  if (exit) {
-    const buf = await readFile(leonrc, 'utf8');
-    const data = decode(buf);
-    return data[key] || `${key} not exists`;
+  if (!flag) {
+    await writeFile(
+      leonrc,
+      encode({
+        ...SETTING,
+      }),
+      'utf8'
+    );
   }
 
-  return SETTING[key] || `${key} not exists`;
-}
+  const buf = await readFile(leonrc, 'utf8');
+  const data = decode(buf);
+  return key ? data[key] : data;
+};
 
-export const getAll = async () => {
-  const exit = await exits(leonrc);
+export const ls = async () => {
+  const { template, registry } = await readRCFile();
+  const tmpList = Object.keys(template).map(key => ({
+    key,
+    value: template[key],
+  }));
 
-  if (exit) {
-    const buf = await readFile(leonrc, 'utf8');
-    const data = decode(buf);
-    return data;
-  }
-
-  return SETTING;
-}
-
-export const set = async (key, value) => {
-  if (!key) {
-    return console.log(red(bold('Error:')), red('<key> is required'));
-  }
-
-  if (!value) {
-    return console.log(red(bold('Error:')), red('<value> is required'));
-  }
-
-  const exit = await exits(leonrc);
-  let options;
-
-  if (exit) {
-    const buf = await readFile(leonrc, 'utf8');
-    const data = decode(buf);
-    options = {
-      ...data,
-      [key]: value,
-    };
+  if (tmpList.length > 0) {
+    tmpList.forEach(({ key, value }) => {
+      if (key === registry) {
+        log.green(`  * ${key}: ${value}`);
+      } else {
+        log.normal(`    ${key}: ${value}`);
+      }
+    });
   } else {
-    options = {
-      ...SETTING,
-      [key]: value,
+    log.redBold(`    Please add a custom template first!`);
+  }
+};
+
+export const changeRegistry = async key => {
+  if (!key) {
+    return log.error('Template <key> is required');
+  }
+
+  const { registry, template, ...others } = await readRCFile();
+
+  if (template[key]) {
+    const options = {
+      ...others,
+      template,
+      registry: key,
     };
+    await writeFile(leonrc, encode(options), 'utf8');
+    log.green(`    Now using template <${key}>: "${template[key]}"`);
+  } else {
+    log.error(`template <${key}> not exists, please add first!`);
   }
-
-  await writeFile(leonrc, encode(options), 'utf8');
-}
-
-export const remove = async key => {
-  const exit = await exits(leonrc);
-  
-  if (exit) {
-    const buf = await readFile(leonrc, 'utf8');
-    const { key: k, ...others } = decode(buf);
-    await writeFile(leonrc, encode(others), 'utf8');
-  }
-}
+};

@@ -1,4 +1,3 @@
-import chalk from "chalk";
 import { version } from '../package.json';
 
 export const ACTIONMAP = {
@@ -10,41 +9,83 @@ export const ACTIONMAP = {
     NAME: 'config',
     ALIAS: 'c',
   },
+  USE: {
+    NAME: 'use',
+    ALIAS: 'u',
+  },
+  LIST: {
+    NAME: 'list',
+    ALIAS: 'ls',
+  },
+  TEMPLATE: {
+    NAME: 'template',
+    ALIAS: 'tp',
+  },
+  GET: {
+    NAME: 'get',
+    ALIAS: 'g',
+  },
+  SET: {
+    NAME: 'set',
+    ALIAS: 's',
+  },
+  REMOVE: {
+    NAME: 'remove',
+    ALIAS: 'rm',
+  },
 };
 
 export const actions = [
   {
     name: ACTIONMAP.INIT.NAME,
     alias: ACTIONMAP.INIT.ALIAS,
-    description: 'create a new project by templates',
+    description: 'Create a new project by templates',
   },
   {
-    name: ACTIONMAP.CONFIG.NAME,
-    alias: ACTIONMAP.CONFIG.ALIAS,
-    description: 'config .leonsrc',
+    name: ACTIONMAP.LIST.NAME,
+    alias: ACTIONMAP.LIST.ALIAS,
+    description: 'Show template lists',
+  },
+  {
+    name: ACTIONMAP.USE.NAME,
+    alias: ACTIONMAP.USE.ALIAS,
+    description: 'Switch template to use',
+  },
+  {
+    name: ACTIONMAP.GET.NAME,
+    alias: ACTIONMAP.GET.ALIAS,
+    description:
+      'Get one custom template, if only use "leon get" show all templates',
+  },
+  {
+    name: ACTIONMAP.SET.NAME,
+    alias: ACTIONMAP.SET.ALIAS,
+    description: 'Add or modify one custom template',
+  },
+  {
+    name: ACTIONMAP.REMOVE.NAME,
+    alias: ACTIONMAP.REMOVE.ALIAS,
+    description: 'Delete one custom template',
   },
 ];
 
-export const green = t => chalk.green(t);
-
-export const red = t => chalk.red(t);
-
-export const bold = t => chalk.bold(t);
-
 export const usages = [
-  '  leon i|init <template-name> <project-name>: init a project by template',
-  '  leon c|config set <key> <value>: set config options',
-  '  leon c|config get <key>: get config options',
-  '  leon c|config remove <key>: remove config options',
+  '  leon init <project-name>                   : Init a project by template',
+  '  leon list                                  : List all the templates',
+  '  leon get <key>?                            : Get one custom template',
+  '  leon set <key> <value>                     : Add or modify one custom template',
+  '  leon remove <key>                          : Delete one custom template',
+  '  leon use <template-name>                   : Switch template to use',
 ];
 
 export const VERSION = version;
 
-export const BASE = process.env[process.platform === 'win32' ? 'USERPROFILE' : 'HOME'];
+export const BASE =
+  process.env[process.platform === 'win32' ? 'USERPROFILE' : 'HOME'];
 
 export const SETTING = {
   template: {
-    normal: 'direct:https://github.com/programary/stms_web.git',
+    leonCli: 'direct:https://github.com/lord2416/leon-cli.git',
   },
-  registry: 'github:programary/stms_web#master',
+  registry: 'leonCli',
 };
